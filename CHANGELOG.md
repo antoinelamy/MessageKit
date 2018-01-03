@@ -8,20 +8,66 @@ The changelog for `MessageKit`. Also see the [releases](https://github.com/Messa
 
 ### Fixed
 
+- Fixed `iPhoneX` `MessageInputBar` transparent bottom area when `keyboardDismissMode` is `interactive`.
+[#425](https://github.com/MessageKit/MessageKit/pull/425) by [@zhongwuzw](https://github.com/zhongwuzw).
+
+### Added
+
+- Added `configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)` method in `MessagesDisplayDelegate` `protocol` to configure `avatarView`.
+[#416](https://github.com/MessageKit/MessageKit/pull/416) by [@zhongwuzw](https://github.com/zhongwuzw).
+
+### Removed
+
+- **Breaking Change** Removed `avatar(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)` method of `MessagesDataSource`, use `configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)` instead.
+[#416](https://github.com/MessageKit/MessageKit/pull/416) by [@zhongwuzw](https://github.com/zhongwuzw).
+
+### Changed
+
+- **Breaking Change** Moved the `handleTapGesture(_ gesture: UIGestureRecognizer)` method from `MessagesCollectionViewCell` to `MessagesCollectionView`.
+[#417](https://github.com/MessageKit/MessageKit/pull/417) by [@zhongwuzw](https://github.com/zhongwuzw).
+
+- **Breaking Change** Changed `AvatarView` from type `UIView` to type `UIImageView`.
+ [#417](https://github.com/MessageKit/MessageKit/pull/417) by [@zhongwuzw](https://github.com/zhongwuzw).
+
+## [[Prerelease] 0.12.0](https://github.com/MessageKit/MessageKit/releases/tag/0.12.0)
+
+### Added
+
+- Added `reloadDataAndKeepOffset()` method to `MessagesCollectionView` to maintain the current position
+when reloading data.
+[#284](https://github.com/MessageKit/MessageKit/pull/284) by [@azurechen](https://github.com/azurechen).
+
+- Added `maintainPositionOnKeyboardFrameChanged: Bool` property to maintain the current position of the 
+`MessagesCollectionView` when the height of the `MessageInputBar` changes.
+[#340](https://github.com/MessageKit/MessageKit/pull/340) by [@KEN-chan](https://github.com/KEN-chan).
+
+- Added `detectorAttributes(for:and:at:)` method to `MessagesDisplayDelegate` allowing `DetectorType`
+attributes to be set outside of the cell.
+[#397](https://github.com/MessageKit/MessageKit/pull/397) by [@SD10](https://github.com/sd10).
+
+### Fixed
+
 - Fixed `indexPathForLastItem` bug when `numberOfSections` equal to 1. 
 [#395](https://github.com/MessageKit/MessageKit/issues/395) by [@zhongwuzw](https://github.com/zhongwuzw).
 
 - Fixed `scrollToBottom(animated:)` not work in some situations.
 [#395](https://github.com/MessageKit/MessageKit/issues/395) by [@zhongwuzw](https://github.com/zhongwuzw).
 
+- Fixed `.attributedText(NSAttributedString)` messages that were not using the `textColor` from the
+`MessagesDisplayDelegate` method.
+[#414](https://github.com/MessageKit/MessageKit/issues/414) by [@SD10](https://github.com/sd10).
+
+- Fixed a bug where new messages using `.attributedText(NSAttributedString)` have the incorrect font.
+[#412](https://github.com/MessageKit/MessageKit/issues/412) by [@SD10](https://github.com/sd10).
+
+
 ### Changed
 
-- **Breaking Change** Removed the generic constraint `<ContentView: UIView>` from `MessageCollectionViewCell`.
-[#391](https://github.com/MessageKit/MessageKit/pull/391) by [@SD10](https://github.com/sd10).
+- **Breaking Change** The `MessageLabel` properties `addressAttributes`, `dateAttributes`, `phoneNumberAttributes`,
+and `urlAttributes` are now read only. Please use `setAttributes(_:detector:)` to set these properties. 
+[#397](https://github.com/MessageKit/MessageKit/pull/397) by [@SD10](https://github.com/sd10).
 
-- **Breaking Change** The `configure(message:indexPath:messagesCollectionView)` method of `LocationMessageCell`,
-`MediaMessageCell`, `TextMessageCell`, and `MessageCollectionViewCell` has been replaced by methods that take the
-delegate return values as arguments.
+- **Breaking Change** Removed the generic constraint `<ContentView: UIView>` from `MessageCollectionViewCell`.
 [#391](https://github.com/MessageKit/MessageKit/pull/391) by [@SD10](https://github.com/sd10).
 
 - **Breaking Change** The `contentView` property has been renamed to `imageView` for `LocationMessageCell` and `MediaMessageCell`

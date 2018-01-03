@@ -51,6 +51,7 @@ open class MessagesCollectionView: UICollectionView {
     public override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
         super.init(frame: frame, collectionViewLayout: layout)
         backgroundColor = .white
+        setupGestureRecognizers()
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -62,23 +63,47 @@ open class MessagesCollectionView: UICollectionView {
     }
 
     // MARK: - Methods
+    
+    func setupGestureRecognizers() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
+        tapGesture.delaysTouchesBegan = true
+        addGestureRecognizer(tapGesture)
+    }
+    
+    @objc
+    open func handleTapGesture(_ gesture: UIGestureRecognizer) {
+        guard gesture.state == .ended else { return }
+        
+        let touchLocation = gesture.location(in: self)
+        guard let indexPath = indexPathForItem(at: touchLocation) else { return }
+        
+        let cell = cellForItem(at: indexPath) as? MessageCollectionViewCell
+        cell?.handleTapGesture(gesture)
+    }
 
     public func scrollToBottom(animated: Bool = false) {
-        guard let indexPath = indexPathForLastItem else { return }
-        
         let collectionViewContentHeight = collectionViewLayout.collectionViewContentSize.height
-        let isContentTooSmall = (collectionViewContentHeight < bounds.height * 2)
-        
-        if isContentTooSmall {
-            performBatchUpdates(nil) { _ in
-                self.scrollRectToVisible(CGRect(0.0, collectionViewContentHeight - 1.0, 1.0, 1.0), animated: animated)
-            }
-            return
-        }
-        
+
         performBatchUpdates(nil) { _ in
-            self.scrollToItem(at: indexPath, at: .bottom, animated: animated)
+            self.scrollRectToVisible(CGRect(0.0, collectionViewContentHeight - 1.0, 1.0, 1.0), animated: animated)
         }
+    }
+    
+    public func reloadDataAndKeepOffset() {
+        // stop scrolling
+        setContentOffset(contentOffset, animated: false)
+        
+        // calculate the offset and reloadData
+        let beforeContentSize = contentSize
+        reloadData()
+        layoutIfNeeded()
+        let afterContentSize = contentSize
+        
+        // reset the contentOffset after data is updated
+        let newOffset = CGPoint(
+            x: contentOffset.x + (afterContentSize.width - beforeContentSize.width),
+            y: contentOffset.y + (afterContentSize.height - beforeContentSize.height))
+        setContentOffset(newOffset, animated: false)
     }
 
 }

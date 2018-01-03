@@ -83,6 +83,17 @@ public protocol MessagesDisplayDelegate: AnyObject {
     ///
     /// The default value returned by this method is a `MessageFooterView`.
     func messageFooterView(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageFooterView
+    
+    /// Configure `AvatarView`‘s image.
+    ///
+    /// - Parameters:
+    ///   - avatarView: The `AvatarView` of the cell.
+    ///   - message: The `MessageType` that will be displayed by this cell.
+    ///   - indexPath: The `IndexPath` of the cell.
+    ///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+    ///
+    /// The default image configured by this method is `?`.
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
 
     // MARK: - Text Messages
 
@@ -109,6 +120,15 @@ public protocol MessagesDisplayDelegate: AnyObject {
     ///
     /// The default value returned by this method is all available detector types.
     func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType]
+
+    /// Specifies the attributes for a given `DetectorType`
+    ///
+    /// - Parameters:
+    ///   - detector: The `DetectorType` for the applied attributes.
+    ///   - message: A `MessageType` with a `MessageData` case of `.text` or `.attributedText`
+    ///   to which the detectors will apply.
+    ///   - indexPath: The `IndexPath` of the cell.
+    func detectorAttributes(for detector: DetectorType, and message: MessageType, at indexPath: IndexPath) -> [NSAttributedStringKey: Any]
 
     // MARK: - Location Messages
 
@@ -184,6 +204,10 @@ public extension MessagesDisplayDelegate {
     func messageFooterView(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageFooterView {
         return messagesCollectionView.dequeueReusableFooterView(MessageFooterView.self, for: indexPath)
     }
+    
+    func configureAvatarView(_ avatarView: AvatarView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+        avatarView.initials = "?"
+    }
 
     // MARK: - Text Messages Defaults
 
@@ -194,6 +218,10 @@ public extension MessagesDisplayDelegate {
 
     func enabledDetectors(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> [DetectorType] {
         return []
+    }
+
+    func detectorAttributes(for detector: DetectorType, and message: MessageType, at indexPath: IndexPath) -> [NSAttributedStringKey: Any] {
+        return MessageLabel.defaultAttributes
     }
 
     // MARK: - Location Messages Defaults
