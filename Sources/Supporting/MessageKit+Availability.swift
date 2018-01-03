@@ -1,7 +1,7 @@
 /*
  MIT License
  
- Copyright (c) 2017 MessageKit
+ Copyright (c) 2017-2018 MessageKit
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -86,4 +86,15 @@ extension MessagesCollectionViewFlowLayout {
         fatalError("Fatal Error: avatarAlwaysTrailing is no longer supported")
     }
     
+}
+
+extension MessagesViewController {
+    /// A Boolean value that determines whether the `MessagesCollectionView` scrolls to the
+    /// bottom on the view's first layout.
+    ///
+    /// The default value of this property is `false`.
+    @available(*, deprecated: 0.11.1, message: "Removed in MessageKit 0.11.1.")
+    open var scrollsToBottomOnFirstLayout: Bool {
+        fatalError("Fatal Error: scrollsToBottomOnFirstLayout is no longer supported")
+    }
 }

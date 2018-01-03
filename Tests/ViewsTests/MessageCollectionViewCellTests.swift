@@ -1,7 +1,7 @@
 /*
  MIT License
  
- Copyright (c) 2017 MessageKit
+ Copyright (c) 2017-2018 MessageKit
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -27,7 +27,7 @@ import XCTest
 
 class MessageCollectionViewCellTests: XCTestCase {
 
-    var cell: MessageCollectionViewCell<UIView>!
+    var cell: MessageCollectionViewCell!
     let frame = CGRect(x: 0, y: 0, width: 100, height: 100)
 
     override func setUp() {
@@ -42,18 +42,16 @@ class MessageCollectionViewCellTests: XCTestCase {
 
     func testInit() {
         XCTAssertEqual(cell.contentView.autoresizingMask, [.flexibleWidth, .flexibleHeight])
-        XCTAssertEqual(cell.contentView.subviews, [cell.cellTopLabel, cell.messageContainerView, cell.avatarView, cell.cellBottomLabel])
-        XCTAssertEqual(cell.messageContainerView.subviews, [cell.messageContentView])
+        XCTAssert(cell.contentView.subviews.contains(cell.cellTopLabel))
+        XCTAssert(cell.contentView.subviews.contains(cell.cellBottomLabel))
+        XCTAssert(cell.contentView.subviews.contains(cell.avatarView))
+        XCTAssert(cell.contentView.subviews.contains(cell.messageContainerView))
+
     }
 
     func testMessageContainerViewPropertiesSetup() {
         XCTAssertTrue(cell.messageContainerView.clipsToBounds)
         XCTAssertTrue(cell.messageContainerView.layer.masksToBounds)
-    }
-
-    func testMessageContentViewPropertiesSetup() {
-        XCTAssertTrue(cell.messageContentView.clipsToBounds)
-        XCTAssertTrue(cell.messageContentView.isUserInteractionEnabled)
     }
 
     func testPrepareForReuse() {
@@ -70,7 +68,6 @@ class MessageCollectionViewCellTests: XCTestCase {
 
         XCTAssertEqual(cell.avatarView.frame, layoutAttributes.frame)
         XCTAssertEqual(cell.messageContainerView.frame, layoutAttributes.messageContainerFrame)
-        XCTAssertEqual(cell.messageContentView.frame, cell.messageContainerView.frame)
         XCTAssertEqual(cell.cellTopLabel.frame, layoutAttributes.topLabelFrame)
         XCTAssertEqual(cell.cellBottomLabel.frame, layoutAttributes.bottomLabelFrame)
     }

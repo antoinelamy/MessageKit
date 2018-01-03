@@ -1,7 +1,7 @@
 /*
  MIT License
 
- Copyright (c) 2017 MessageKit
+ Copyright (c) 2017-2018 MessageKit
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -279,8 +279,13 @@ fileprivate extension MessagesCollectionViewFlowLayout {
         switch intermediateAttributes.message.data {
         case .emoji:
             attributes.messageLabelFont = emojiLabelFont
-        default:
+        case .text:
             attributes.messageLabelFont = messageLabelFont
+        case .attributedText(let text):
+            guard let font = text.attribute(.font, at: 0, effectiveRange: nil) as? UIFont else { return }
+            attributes.messageLabelFont = font
+        default:
+            break
         }
 
     }
@@ -309,8 +314,7 @@ fileprivate extension MessagesCollectionViewFlowLayout {
 
         return position
     }
-    
-    
+
     // B
     
     /// Returns the size of the `AvatarView` for a given `MessageType`.
@@ -473,7 +477,6 @@ private extension MessagesCollectionViewFlowLayout {
         let avatarVertical = attributes.avatarPosition.vertical
         let avatarWidth = attributes.avatarSize.width
 
-
         switch (labelHorizontal, avatarHorizontal) {
 
         case (.cellLeading, _), (.cellTrailing, _):
@@ -631,4 +634,3 @@ private extension MessagesCollectionViewFlowLayout {
     }
     
 }
-

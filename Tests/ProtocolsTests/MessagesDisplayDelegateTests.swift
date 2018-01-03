@@ -1,7 +1,7 @@
 /*
  MIT License
 
- Copyright (c) 2017 MessageKit
+ Copyright (c) 2017-2018 MessageKit
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -243,15 +243,16 @@ private class MockMessagesViewController: MessagesViewController, MessagesDispla
         return 200
     }
 
-
     var dataProvider: MockMessagesDataSource!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         dataProvider = makeDataSource()
+        messagesCollectionView.messagesDisplayDelegate = self
         messagesCollectionView.messagesDataSource = dataProvider
         messagesCollectionView.messagesLayoutDelegate = self
+
     }
 
     private func makeDataSource() -> MockMessagesDataSource {

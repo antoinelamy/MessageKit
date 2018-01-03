@@ -1,7 +1,7 @@
 /*
  MIT License
 
- Copyright (c) 2017 MessageKit
+ Copyright (c) 2017-2018 MessageKit
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -155,7 +155,6 @@ public protocol MessagesLayoutDelegate: AnyObject {
     /// rect using the `maxWidth` and `.greatestFiniteMagnitude` for the height.
     func heightForMedia(message: MessageType, at indexPath: IndexPath, with maxWidth: CGFloat, in messagesCollectionView: MessagesCollectionView) -> CGFloat
 
-
     // MARK: - Location Messages
 
     /// Specifies the width for a `MessageContainerView`.
@@ -267,5 +266,3 @@ public extension MessagesLayoutDelegate {
     }
 
 }
-
-
